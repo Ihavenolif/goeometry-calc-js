@@ -23,8 +23,6 @@ function calc() {
     }
   }
 
-  console.log(knownVariables);
-
   if(knownVariables>2){
     if(values.a != "" && values.b != "" && values.gamma != ""){ //A B GAMMA
       values.c = Math.sqrt(Math.pow(values.a,2)+Math.pow(values.b,2)-2*values.a*values.b*Math.cos(toRadians(values.gamma)));
@@ -43,13 +41,37 @@ function calc() {
       document.forms["uhly"]["ALPHA"].value = values.alpha;
       document.forms["uhly"]["GAMMA"].value = values.gamma;
     } else if(values.a != "" && values.beta != "" && values.gamma != ""){ //A BETA GAMMA
+      values.alpha = 180 - (values.beta + values.alpha);
+      values.b = (values.a * Math.sin(toRadians(values.beta)))/Math.sin(toRadians(values.alpha));
+      values.c = (values.a * Math.sin(toRadians(values.gamma)))/Math.sin(toRadians(values.alpha));
 
+      document.forms["strany"]["B"].value = values.b;
+      document.forms["uhly"]["ALPHA"].value = values.alpha;
+      document.forms["strany"]["C"].value = values.c;
     } else if(values.alpha != "" && values.beta != "" && values.c != ""){ //ALPHA BETA C
+      values.gamma = 180 - (values.beta + values.alpha);
+      values.b = (values.c * Math.sin(toRadians(values.beta)))/Math.sin(toRadians(values.gamma));
+      values.a = (values.c * Math.sin(toRadians(values.alpha)))/Math.sin(toRadians(values.gamma));
 
+      document.forms["strany"]["B"].value = values.b;
+      document.forms["uhly"]["GAMMA"].value = values.gamma;
+      document.forms["strany"]["A"].value = values.a;
     } else if(values.alpha != "" && values.b != "" && values.gamma != ""){ //ALPHA B GAMMA
+      values.beta = 180 - (values.alpha + values.gamma);
+      values.c = (values.b * Math.sin(toRadians(values.gamma)))/Math.sin(toRadians(values.beta));
+      values.a = (values.b * Math.sin(toRadians(values.alpha)))/Math.sin(toRadians(values.beta));
 
+      document.forms["strany"]["C"].value = values.c;
+      document.forms["uhly"]["BETA"].value = values.beta;
+      document.forms["strany"]["A"].value = values.a;
     } else if(values.alpha != "" && values.b != "" && values.c != ""){ //ALPHA B C
+      values.a = Math.sqrt(Math.pow(values.a, 2)+Math.pow(values.c, 2)-2*values.a*values.c*Math.cos(toRadians(values.gamma)));
+      values.beta = toDegrees(Math.asin((Math.sin(toRadians(values.alpha))*values.b)/values.a));
+      values.gamma = toDegrees(Math.asin((values.c*Math.sin(toRadians(values.beta))/values.b)));
 
+      document.forms["strany"]["A"].value = values.a;
+      document.forms["uhly"]["BETA"].value = values.beta;
+      document.forms["uhly"]["GAMMA"].value = values.gamma;
     }
   }
 }
