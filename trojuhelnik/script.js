@@ -73,6 +73,36 @@ function calc() {
       document.forms["uhly"]["BETA"].value = values.beta;
       document.forms["uhly"]["GAMMA"].value = values.gamma;
     }
+    var skupinaA = values.a != "" && values.alpha != "";
+    if(skupinaA && values.b != ""){
+
+    } else if(skupinaA && values.beta != ""){
+
+    } else if(skupinaA && values.c != ""){
+
+    } else if(skupinaA && values.gamma != ""){
+
+    }
+    var skupinaB = values.b != "" && values.beta != "";
+    if(skupinaB && values.a != ""){
+
+    } else if(skupinaB && values.alpha != ""){
+
+    } else if(skupinaB && values.c != ""){
+
+    } else if(skupinaB && values.gamma != ""){
+
+    }
+    var skupinaC = values.c != "" && values.gamma != "";
+    if(skupinaC && values.a != ""){
+
+    } else if(skupinaC && values.alpha != ""){
+
+    } else if(skupinaC && values.b != ""){
+
+    } else if(skupinaC && values.beta != ""){
+
+    }
   }
 }
 
