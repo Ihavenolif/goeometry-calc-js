@@ -41,7 +41,7 @@ function calc() {
       document.forms["uhly"]["ALPHA"].value = values.alpha;
       document.forms["uhly"]["GAMMA"].value = values.gamma;
     } else if(values.a != "" && values.beta != "" && values.gamma != ""){ //A BETA GAMMA
-      values.alpha = 180 - (values.beta + values.alpha);
+      values.alpha = 180 - values.beta - values.gamma;
       values.b = (values.a * Math.sin(toRadians(values.beta)))/Math.sin(toRadians(values.alpha));
       values.c = (values.a * Math.sin(toRadians(values.gamma)))/Math.sin(toRadians(values.alpha));
 
@@ -49,7 +49,7 @@ function calc() {
       document.forms["uhly"]["ALPHA"].value = values.alpha;
       document.forms["strany"]["C"].value = values.c;
     } else if(values.alpha != "" && values.beta != "" && values.c != ""){ //ALPHA BETA C
-      values.gamma = 180 - (values.beta + values.alpha);
+      values.gamma = 180 - values.beta - values.alpha;
       values.b = (values.c * Math.sin(toRadians(values.beta)))/Math.sin(toRadians(values.gamma));
       values.a = (values.c * Math.sin(toRadians(values.alpha)))/Math.sin(toRadians(values.gamma));
 
@@ -57,7 +57,7 @@ function calc() {
       document.forms["uhly"]["GAMMA"].value = values.gamma;
       document.forms["strany"]["A"].value = values.a;
     } else if(values.alpha != "" && values.b != "" && values.gamma != ""){ //ALPHA B GAMMA
-      values.beta = 180 - (values.alpha + values.gamma);
+      values.beta = 180 - values.alpha - values.gamma;
       values.c = (values.b * Math.sin(toRadians(values.gamma)))/Math.sin(toRadians(values.beta));
       values.a = (values.b * Math.sin(toRadians(values.alpha)))/Math.sin(toRadians(values.beta));
 
