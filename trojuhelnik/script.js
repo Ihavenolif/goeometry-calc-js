@@ -131,17 +131,50 @@ function calc() {
       pokracovat = false;
     }
     var skupinaB = values.b != "" && values.beta != "" && pokracovat;
-    if(skupinaB && values.a != ""){
+    if(skupinaB && values.a != ""){ // B A
+      values.alpha = toDegrees(Math.asin((values.a*Math.sin(toRadians(values.beta))/values.b)));
+      values.gamma = 180 - values.alpha - values.beta;
+      values.c = (values.a*Math.sin(toRadians(values.gamma)))/Math.sin(toRadians(values.alpha));
+
+      document.forms["uhly"]["ALPHA"].value = values.alpha;
+      document.forms["uhly"]["GAMMA"].value = values.gamma;
+      document.forms["strany"]["C"].value = values.c;
+
       pokracovat = false;
-    } else if(skupinaB && values.alpha != ""){
+    } else if(skupinaB && values.alpha != ""){ // B ALPHA
+      values.a = (values.b*Math.sin(toRadians(values.alpha)))/values.beta;
+      values.gamma = 180 - values.alpha - values.beta;
+      values.c = (values.a*Math.sin(toRadians(values.gamma)))/Math.sin(toRadians(values.alpha));
+
+      document.forms["strany"]["A"].value = values.a;
+      document.forms["strany"]["C"].value = values.c;
+      document.forms["uhly"]["GAMMA"].value = values.gamma;
+      
       pokracovat = false;
-    } else if(skupinaB && values.c != ""){
+    } else if(skupinaB && values.c != ""){ // B C 
+      values.gamma = toDegrees(Math.asin((values.c*Math.sin(toRadians(values.beta))/values.b)));
+      values.alpha = 180 - values.beta - values.gamma;
+      values.a = (values.c*Math.sin(toRadians(values.alpha)))/Math.sin(toRadians(values.gamma));
+
+      document.forms["uhly"]["ALPHA"] = values.alpha;
+      document.forms["uhly"]["GAMMA"] = values.gamma;
+      document.forms["strany"]["A"] = values.a;
+
       pokracovat = false;
-    } else if(skupinaB && values.gamma != ""){
+    } else if(skupinaB && values.gamma != ""){ // B GAMMA
+      values.c = (values.b*Math.sin(toRadians(values.gamma)))/Math.sin(toRadians(values.beta));
+      values.beta = 180 - values.alpha - values.gamma;
+      values.a = (values.c*Math.sin(toRadians(values.alpha)))/Math.sin(toRadians(values.gamma));
+
+      document.forms["strany"]["C"] = values.c;
+      document.forms["strany"]["A"] = values.a;
+      document.forms["uhly"]["BETA"] = values.beta;
+
       pokracovat = false;
-    }
+    } 
     var skupinaC = values.c != "" && values.gamma != "" && pokracovat;
-    if(skupinaC && values.a != ""){
+    if(skupinaC && values.a != ""){ // C A
+      values.alpha = toDegrees(Math.asin())
       pokracovat = false;
     } else if(skupinaC && values.alpha != ""){
       pokracovat = false;
