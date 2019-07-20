@@ -16,9 +16,12 @@
         Počet Min: <input type="number" name="pocetMin" class="btn" value="2" placeholder="Počet Min">
         Počet Životů: <input type="number" name="pocetZivotu" class="btn" placeholder="Počet Životů">
         <input type="button" onclick="generateTable()" class="btn" value="Začít Hru">
-        <div type="button" id="btnTest" class="policko" value="test"></div>
     </form>
     <table id="table"></table>
+    <form name="mode">
+        Cursor: <input type="radio" name="mode" value="Cursor" checked>
+        Flag: <input type="radio" name="mode" value="Flag">
+    </form>
     <script src="miny.js"></script>
 </body>
 </html>
