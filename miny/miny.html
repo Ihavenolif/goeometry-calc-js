@@ -1,27 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Míny</title>
-    <link href="miny.css" rel="stylesheet"></style>
-    <script src="miny.js"></script>
-</head>
-<body>
-    <button class="btn" id="gotoMain" onclick="gotoMain()">Hlavní Stránka</button>
+    <link href="miny.css" rel="stylesheet" />
+  </head>
+
+  <body>
+    <button class="btn" id="gotoMain" onclick="gotoMain()">
+      Hlavní Stránka
+    </button>
+    <h1 id="cas">00:00</h1>
     <form name="input">
-        Výška: <input type="number" name="vyska" class="btn" value="4"laceholder="Výška">
-        Šířka: <input type="number" name="sirka" class="btn" value="3" placeholder="Šířka">
-        Počet Min: <input type="number" name="pocetMin" class="btn" value="2" placeholder="Počet Min">
-        Počet Životů: <input type="number" name="pocetZivotu" class="btn" placeholder="Počet Životů">
-        <input type="button" onclick="generateTable()" class="btn" value="Začít Hru">
+      Výška:
+      <input type="number" name="vyska" class="btn" placeholder="Výška" />
+      Šířka:
+      <input type="number" name="sirka" class="btn" placeholder="Šířka" /> Počet
+      Min:
+      <input
+        type="number"
+        name="pocetMin"
+        class="btn"
+        placeholder="Počet Min"
+      />
+      Počet Životů:
+      <input
+        type="number"
+        name="pocetZivotu"
+        class="btn"
+        placeholder="Počet Životů"
+      />
+      <input
+        type="button"
+        onclick="generateTable()"
+        class="btn"
+        value="Začít Hru"
+      />
     </form>
     <table id="table"></table>
-    <form name="mode">
-        Cursor: <input type="radio" name="mode" value="Cursor" checked>
-        Flag: <input type="radio" name="mode" value="Flag">
-    </form>
+    <div class="mode">
+      <img
+        id="cursor"
+        src="cursorActive.png"
+        width="70px"
+        height="70px"
+        onclick="activateCursor()"
+      />
+      <img
+        id="flag"
+        src="flag.jpg"
+        width="70px"
+        height="70px"
+        onclick="activateFlag()"
+      />
+    </div>
     <script src="miny.js"></script>
-</body>
+  </body>
 </html>
