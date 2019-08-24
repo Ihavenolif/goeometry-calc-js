@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Conway's Game of Life</title>
+    <link href="cgol.css" rel="stylesheet" />
+  </head>
+
+  <body>
+    <button class="btn" id="gotoMain" onclick="gotoMain()">
+      Hlavní Stránka
+    </button>
+    <form name="input">
+      Výška:
+      <input
+        type="number"
+        name="vyska"
+        class="btn"
+        placeholder="Výška"
+        value="10"
+      />
+      Šířka:
+      <input
+        type="number"
+        name="sirka"
+        class="btn"
+        placeholder="Šířka"
+        value="10"
+      />
+      <input
+        type="button"
+        onclick="generateTable()"
+        class="btn"
+        value="Vytvořit pole"
+      />
+    </form>
+    <table id="table"></table>
+    <div id="startButtonDiv"></div>
+    <script src="cgol.js"></script>
+  </body>
+</html>

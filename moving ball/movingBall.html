@@ -8,7 +8,7 @@
     <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
     <style>
       #cvs {
-        border: 0px;
+        border: solid 1px #4caf50;
         padding: 0px;
         margin: 0px;
       }
@@ -16,10 +16,21 @@
       body {
         background-color: black;
       }
+
+      .btn {
+        width: 15%;
+        background: none;
+        border: 2px solid #4caf50;
+        color: white;
+        padding: 5px;
+        font-size: 18px;
+        cursor: pointer;
+      }
     </style>
   </head>
   <body>
-    <canvas id="cvs" width="1900px" height="950px"></canvas>
+    <button class="btn" onclick="gotoMain()">Hlavní Stránka</button>
+    <canvas id="cvs" width="1440px" height="810px"></canvas>
     <script src="movingBall.js"></script>
   </body>
 </html>

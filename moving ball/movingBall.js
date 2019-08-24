@@ -1,97 +1,90 @@
-var direction = null;
-var XPos = 950;
-var YPos = 475;
+left = up = right = down = false;
+var XPos = 720;
+var YPos = 405;
 var velocity = 5;
+
+function gotoMain() {
+  window.location = "../index.html";
+}
 
 function keyPush(evt) {
   switch (evt.keyCode) {
     case 37:
-      direction = "L";
+      left = true;
       break;
     case 38:
-      direction = "U";
+      up = true;
       break;
     case 39:
-      direction = "R";
+      right = true;
       break;
     case 40:
-      direction = "D";
+      down = true;
       break;
   }
 }
 function keyRelease(evt) {
   switch (evt.keyCode) {
     case 37:
-      direction = null;
+      left = false;
       break;
     case 38:
-      direction = null;
+      up = false;
       break;
     case 39:
-      direction = null;
+      right = false;
       break;
     case 40:
-      direction = null;
+      down = false;
       break;
   }
 }
 function move() {
-  switch (direction) {
-    case null:
-      break;
-    case "L":
-      if (XPos == 0) {
-        XPos = 1900;
-      } else {
-        XPos -= velocity;
-      }
-      ctx.fillStyle = "black";
-      ctx.fillRect(0, 0, canv.width, canv.height);
-      ctx.fillStyle = "white";
-      ctx.beginPath();
-      ctx.arc(XPos, YPos, 30, 0, 2 * Math.PI);
-      ctx.fill();
-      break;
-    case "U":
-      if (YPos == 0) {
-        YPos = 950;
-      } else {
-        YPos -= velocity;
-      }
-      ctx.fillStyle = "black";
-      ctx.fillRect(0, 0, canv.width, canv.height);
-      ctx.fillStyle = "white";
-      ctx.beginPath();
-      ctx.arc(XPos, YPos, 30, 0, 2 * Math.PI);
-      ctx.fill();
-      break;
-    case "R":
-      if (XPos == 1900) {
-        XPos = 0;
-      } else {
-        XPos += velocity;
-      }
-      ctx.fillStyle = "black";
-      ctx.fillRect(0, 0, canv.width, canv.height);
-      ctx.fillStyle = "white";
-      ctx.beginPath();
-      ctx.arc(XPos, YPos, 30, 0, 2 * Math.PI);
-      ctx.fill();
-      break;
-    case "D":
-      if (YPos == 950) {
-        YPos = 0;
-      } else {
-        YPos += velocity;
-      }
-      ctx.fillStyle = "black";
-      ctx.fillRect(0, 0, canv.width, canv.height);
-      ctx.fillStyle = "white";
-      ctx.beginPath();
-      ctx.arc(XPos, YPos, 30, 0, 2 * Math.PI);
-      ctx.fill();
-      break;
+  if (left || up || right || down) {
+    ctx.fillStyle = "black";
+    ctx.fillRect(0, 0, canv.width, canv.height);
+    if (left) moveLeft();
+    if (up) moveUp();
+    if (right) moveRight();
+    if (down) moveDown();
   }
+}
+
+function moveLeft() {
+  if (XPos <= 0) {
+    XPos = canv.width;
+  } else XPos -= velocity;
+  ctx.fillStyle = "white";
+  ctx.beginPath();
+  ctx.arc(XPos, YPos, 30, 0, 2 * Math.PI);
+  ctx.fill();
+}
+
+function moveUp() {
+  if (YPos <= 0) YPos = canv.height;
+  else YPos -= velocity;
+  ctx.fillStyle = "white";
+  ctx.beginPath();
+  ctx.arc(XPos, YPos, 30, 0, 2 * Math.PI);
+  ctx.fill();
+}
+
+function moveRight() {
+  if (XPos >= canv.width) XPos = 0;
+  else XPos += velocity;
+  ctx.fillStyle = "white";
+  ctx.beginPath();
+  ctx.arc(XPos, YPos, 30, 0, 2 * Math.PI);
+  ctx.fill();
+}
+
+function moveDown() {
+  if (YPos >= canv.height) YPos = 0;
+  else YPos += velocity;
+  ctx.fillStyle = "white";
+  ctx.beginPath();
+  ctx.arc(XPos, YPos, 30, 0, 2 * Math.PI);
+  ctx.fill();
 }
 
 window.onload = function() {
@@ -104,6 +97,6 @@ window.onload = function() {
   ctx.fillRect(0, 0, canv.width, canv.height);
   ctx.fillStyle = "white";
   ctx.beginPath();
-  ctx.arc(950, 475, 30, 0, 2 * Math.PI);
+  ctx.arc(canv.width / 2, canv.height / 2, 30, 0, 2 * Math.PI);
   ctx.fill();
 };

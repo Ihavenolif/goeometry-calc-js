@@ -1,42 +1,72 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Trojúhelník - Geometry Calculator</title>
+    <link href="trojuhelnik.css" rel="stylesheet" type="text/css" />
+  </head>
 
-<head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width">
-	<title>Trojúhelník - Geometry Calculator</title>
-  <link href="trojuhelnik.css" rel="stylesheet" type="text/css" />
-  <script src="script.js"></script>
-</head>
+  <body>
+    <div id="forms">
+      <div id="Left">
+        <form name="strany">
+          <input
+            class="textbox"
+            type="number"
+            name="A"
+            onchange="calc()"
+            placeholder="Strana a (BC)"
+          />
+          <input
+            class="textbox"
+            type="number"
+            name="B"
+            onchange="calc()"
+            placeholder="Strana b (AC)"
+          />
+          <input
+            class="textbox"
+            type="number"
+            name="C"
+            onchange="calc()"
+            placeholder="Strana c (AB)"
+          />
+        </form>
+        <p id="obvod">Obvod = N/A</p>
+      </div>
 
-<body>
-	<div id="input">
-    <div id="Strany">
-      <form name="strany">
-        <input class="textbox" type="number" name="A" onchange="calc()" placeholder="Strana a (BC)">
-        <input class="textbox" type="number" name="B" onchange="calc()" placeholder="Strana b (AC)">
-        <input class="textbox" type="number" name="C" onchange="calc()" placeholder="Strana c (AB)">
-      </form>
+      <div id="Right">
+        <form name="uhly">
+          <input
+            class="textbox"
+            type="number"
+            name="ALPHA"
+            onchange="calc()"
+            placeholder="Úhel Alfa"
+          />
+          <input
+            class="textbox"
+            type="number"
+            name="BETA"
+            onchange="calc()"
+            placeholder="Úhel Beta"
+          />
+          <input
+            class="textbox"
+            type="number"
+            name="GAMMA"
+            onchange="calc()"
+            placeholder="Úhel Gamma"
+          />
+        </form>
+        <p id="obsah">Obsah = N/A</p>
+      </div>
+
+      <div id="Display">
+        <canvas id="canv"></canvas>
+      </div>
     </div>
-  
-    <div id="Uhly">
-      <form name="uhly">
-        <input class="textbox" type="number" name="ALPHA" onchange="calc()" placeholder="Úhel Alfa">
-        <input class="textbox" type="number" name="BETA" onchange="calc()" placeholder="Úhel Beta">
-        <input class="textbox" type="number" name="GAMMA" onchange="calc()" placeholder="Úhel Gamma">
-      </form>
-    </div>
-  </div>
-
-  <div id="output">
-    <div id="outputLeft">
-      <p id="obvod">Obvod = N/A</p>
-    </div>
-
-    <div id="outputRight">
-      <p id="obsah">Obsah = N/A</p>
-    </div>
-  </div>
-</body>
-
+    <script src="script.js"></script>
+  </body>
 </html>
