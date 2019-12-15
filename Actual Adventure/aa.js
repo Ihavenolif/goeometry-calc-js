@@ -74,6 +74,17 @@ function gameStarter() {
   if (gameRunning) game();
 }
 
+function shoot() {
+  if (CDCount == 0) {
+    shots.push({
+      xpos: xpos,
+      ypos: 650,
+      id: shots.length
+    });
+    CDCount = 60;
+  }
+}
+
 function game() {
   if (left) {
     if (xpos != 0) {
@@ -88,17 +99,6 @@ function game() {
 
   if (space) {
     shoot();
-  }
-
-  function shoot() {
-    if (CDCount == 0) {
-      shots.push({
-        xpos: xpos,
-        ypos: 650,
-        id: shots.length
-      });
-      CDCount = 60;
-    }
   }
 
   ctx.fillStyle = "black";

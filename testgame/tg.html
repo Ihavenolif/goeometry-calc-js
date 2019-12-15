@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Actual Adventure</title>
+    <link rel="stylesheet" href="tg.css" />
+  </head>
+  <body>
+    <div>
+      <img id="playbutton" src="playButton.png" onclick="startGame()">
+      <span class="text" id="money">Money: 50</span>
+      <span class="text" id="health">Health: 100</span>
+    </div>
+    <div>
+      <canvas id="canv"></canvas>
+    </div>
+
+    <div>
+      <div class="shop" onclick="upgradePistol()">
+        <img class="pistolLevelDiv" src="pistolIcon.png" width="50px" height="50px">
+        <span class="pistolLevelDiv" id="pistolLevel">Level 1</span>
+        <span class="pistolLevelDiv" id="pistolUpgradeCost">$50</span>
+        <span class="pistolLevelDiv" id="pistolRecharge">Recgarge:<br>1s</span>
+      </div>
+      <div class="shop" onclick="upgradeBullet()">
+        <img class="pistolLevelDiv" src="bulletIcon.png" width="50px" height="50px">
+        <span class="pistolLevelDiv" id="bulletLevel">Level 1</span>
+        <span class="pistolLevelDiv" id="bulletUpgradeCost">$50</span>
+        <span class="pistolLevelDiv" id="bulletWidth">Width:<br>4px</span>
+      </div>
+    </div>
+    
+    
+
+    <script src="../2dlidlengine.js"></script>
+    <script src="tg.js"></script>
+    <script>
+      function startGame(){
+        if(gamerunning){
+          gamerunning = false;
+          document.getElementById("playbutton").src = "playButton.png"
+        }else{
+          if(!lost) gamerunning = true;
+          document.getElementById("playbutton").src = "pauseButton.png"
+        }
+      }
+    </script>
+  </body>
+</html>
