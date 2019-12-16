@@ -4,17 +4,17 @@ pistolRechargeTime = 1;
 bulletLevel = 1;
 bulletUpgradeCost = 50;
 bulletWidth = 4;
+enemySpawnTime = 180;
+spawnCD = 180;
+laserPointer = false;
+weaponDamage = 15;
 
 function game(){
-  if (left) {
-    if (xpos != 0) {
-      xpos -= 6;
-    }
+  if (left && xpos >= 0) {
+    xpos -= 6;
   }
-  if (right) {
-    if (xpos != 700) {
-      xpos += 6;
-    }
+  if (right && xpos <= 700) {
+    xpos += 6;
   }
 
   if (space) {
@@ -28,7 +28,14 @@ function game(){
   }
 
   for (x of enemies){
-    x.ypos += 3;
+    switch(x.type){
+      case 1:
+        x.ypos += 3
+        break;
+      case 2:
+        x.ypos += 2
+        break;
+    }
   }
 
   for(shotId of shots){
@@ -40,11 +47,26 @@ function game(){
         document.getElementById("health").innerHTML = "Health: " + health
       }
       if(collidesWith(shotId,enemyId)) { //WHENEVER ENEMY DIES
-        shotId.alive = 0;
-        enemyId.alive = 0;
-        money += 5;
-        score += 5;
-        document.getElementById("money").innerHTML = "Money: " + money
+        if(enemyId.health<=weaponDamage){
+          switch(enemyId){
+            case 1:
+              shotId.alive = 0
+              enemyId.alive = 0
+              money += 5;
+              score += 5;
+              break;
+            case 2:
+              shotId.alive = 0
+              enemyId.alive = 0
+              money += 15;
+              score += 15;
+              break;
+          }
+          document.getElementById("money").innerHTML = "Money: " + money
+        } else{
+          enemyId.health -= weaponDamage;
+          shotId.alive = 0;
+        }
       }
     }
   }
@@ -59,6 +81,7 @@ function game(){
     alert("You Lost! Total score: " + score)
   }
 
+  enemySpawn()
   draw()
 }
 
@@ -77,15 +100,37 @@ function shoot(){
 }
 
 function enemySpawn() {
-  enemies.push({
-    xpos: Math.floor(Math.random() * 700),
-    ypos: 0,
-    width: 20,
-    height: 20,
-    id: enemies.length,
-    type: 1,
-    alive: 1
-  });
+  if(spawnCD <= 0){
+    enemyType = Math.floor(Math.random() * 100);
+    if (enemyType > 75){
+      enemies.push({
+        xpos: Math.floor(Math.random() * 700),
+        ypos: 0,
+        width: 30,
+        height: 30,
+        id: enemies.length,
+        type: 2,
+        alive: 1,
+        health: 20
+      })
+    } else if(enemyType < 75){
+      enemies.push({
+        xpos: Math.floor(Math.random() * 700),
+        ypos: 0,
+        width: 20,
+        height: 20,
+        id: enemies.length,
+        type: 1,
+        alive: 1,
+        health: 10
+      });
+    }
+
+    enemySpawnTime *= 0.995
+    spawnCD = enemySpawnTime
+
+  }
+  spawnCD--
 }
 
 function filter_array2(test_array) {
@@ -152,6 +197,13 @@ function upgradeBullet(){
   }
 }
 
+function buyLaserPointer(){
+  if(money>=100){
+    laserPointer = true;
+    money -= 100
+  }
+}
+
 function draw(){
   ctx.fillStyle = "black";
   ctx.fillRect(0, 0, 700, 700);
@@ -170,14 +222,48 @@ function draw(){
   }
 
   for(index of enemies){
-    ctx.fillStyle = "yellow";
-    ctx.fillRect(index.xpos - 10, index.ypos, 20, 20);
+    switch(index.type){
+      case 1:
+        ctx.fillStyle = "yellow";
+        ctx.fillRect(index.xpos - 10, index.ypos, 20, 20);
+        break;
+      case 2:
+        ctx.fillStyle = "blue";
+        ctx.fillRect(index.xpos - 15, index.ypos, 30, 30);
+        break;
+    }
+  }
+
+  if(laserPointer){
+    ctx.strokeStyle = "#ff5900";
+    ctx.beginPath();
+    ctx.moveTo(xpos, 670)
+    ctx.lineTo(xpos, 0)
+    ctx.stroke();
+  }
+}
+
+function updateTime() {
+  if (gamerunning) {
+    inc++;
+    sec = inc;
+    if (sec == 60) {
+      sec -= 60;
+      inc -= 60;
+      min++;
+    }
+    if (min.toString().length == 1) {
+      min = "0" + min;
+    }
+    if (sec.toString().length == 1) {
+      sec = "0" + sec;
+    }
+
+    document.getElementById("cas").innerHTML = min + ":" + sec;
   }
 }
 
 setInterval(() => {
   if(gamerunning) game()
 }, 1000/60);
-setInterval(() => {
-  if(gamerunning) enemySpawn()
-}, 3000);
+setInterval(updateTime, 1000);

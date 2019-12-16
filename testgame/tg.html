@@ -12,6 +12,7 @@
       <img id="playbutton" src="playButton.png" onclick="startGame()">
       <span class="text" id="money">Money: 50</span>
       <span class="text" id="health">Health: 100</span>
+      <span class="text" id="cas">00:00</span>
     </div>
     <div>
       <canvas id="canv"></canvas>
@@ -29,6 +30,13 @@
         <span class="pistolLevelDiv" id="bulletLevel">Level 1</span>
         <span class="pistolLevelDiv" id="bulletUpgradeCost">$50</span>
         <span class="pistolLevelDiv" id="bulletWidth">Width:<br>4px</span>
+      </div>
+      <div class="shop" onclick="buyLaserPointer()">
+        <img class="pistolLevelDiv" src="scopeIcon.png" width="50px" height="50px">
+        <span class="pistolLevelDiv" id="laserPurchaseCost">$100</span>
+        <span class="pistolLevelDiv" style="color: black">.</span>
+        <span class="pistolLevelDiv" style="color: black">.</span>
+        <span class="pistolLevelDiv" style="color: black">.</span>
       </div>
     </div>
     

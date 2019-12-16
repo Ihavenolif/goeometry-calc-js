@@ -17,6 +17,9 @@ gamerunning = false;
 money = 50;
 score = 0;
 lost = false;
+inc = 0
+min = 0;
+sec = 0;
 canv.style.border = "2px solid #4caf50";
 document.addEventListener("keydown", keyDown);
 document.addEventListener("keyup", keyUp);
