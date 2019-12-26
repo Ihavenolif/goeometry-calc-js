@@ -14,7 +14,7 @@ weaponDamage = 15;
 document.addEventListener("keydown", keyDown2)
 
 function keyDown2(evt) {
-  switch(evt.keyCode){
+  switch (evt.keyCode) {
     case 49:
       upgradePistol()
       break
@@ -30,7 +30,7 @@ function keyDown2(evt) {
   }
 }
 
-function game(){
+function game() {
   if (left && xpos >= 0) {
     xpos -= 6;
   }
@@ -42,14 +42,14 @@ function game(){
     shoot();
   }
 
-  if(CDCount>0) CDCount--;
+  if (CDCount > 0) CDCount--;
 
-  for (x of shots){
+  for (x of shots) {
     x.ypos -= 10;
   }
 
-  for (x of enemies){
-    switch(x.type){
+  for (x of enemies) {
+    switch (x.type) {
       case 1:
         x.ypos += 3
         break;
@@ -59,12 +59,12 @@ function game(){
     }
   }
 
-  for(shotId of shots){
-    if(collidesWithY(shotId, {height: 0, ypos: 0})) shotId.alive = 0; //WHENEVER A SHOT EXITS THE MAP
-    for(enemyId of enemies){
-      if(enemyId.ypos>=670){ //WHENEVER ENEMY HITS THE PLAYER
+  for (shotId of shots) {
+    if (collidesWithY(shotId, { height: 0, ypos: 0 })) shotId.alive = 0; //WHENEVER A SHOT EXITS THE MAP
+    for (enemyId of enemies) {
+      if (enemyId.ypos >= 670) { //WHENEVER ENEMY HITS THE PLAYER
         enemyId.alive = 0;
-        switch(enemyId.type){
+        switch (enemyId.type) {
           case 1:
             health -= 10;
             break;
@@ -74,11 +74,11 @@ function game(){
         }
         document.getElementById("health").innerHTML = "Health: " + health
       }
-      if(collidesWith(shotId,enemyId)) { //WHENEVER COLLIDES WITH BULLET
-        if(enemyId.health<weaponDamage){ //IF HEALTH IS LOWER THAN WEAPON DAMAGE -> KILL
+      if (collidesWith(shotId, enemyId)) { //WHENEVER COLLIDES WITH BULLET
+        if (enemyId.health <= weaponDamage) { //IF HEALTH IS LOWER THAN WEAPON DAMAGE -> KILL
           shotId.alive = 0
           enemyId.alive = 0
-          switch(enemyId.type){
+          switch (enemyId.type) {
             case 1:
               money += 5;
               score += 5;
@@ -89,7 +89,7 @@ function game(){
               break;
           }
           document.getElementById("money").innerHTML = "Money: " + money
-        } else{
+        } else {
           enemyId.health -= weaponDamage;
           shotId.alive = 0;
         }
@@ -101,7 +101,7 @@ function game(){
   enemies = filter_array2(enemies)
 
 
-  if(health <= 0){
+  if (health <= 0) {
     gamerunning = false;
     lost = true;
     alert("You Lost! Total score: " + score)
@@ -111,8 +111,8 @@ function game(){
   draw()
 }
 
-function shoot(){
-  if (CDCount == 0){
+function shoot() {
+  if (CDCount == 0) {
     shots.push({
       xpos: xpos,
       ypos: 650,
@@ -126,9 +126,9 @@ function shoot(){
 }
 
 function enemySpawn() {
-  if(spawnCD <= 0){
+  if (spawnCD <= 0) {
     enemyType = Math.floor(Math.random() * 100);
-    if (enemyType > 75){
+    if (enemyType > 75) {
       enemies.push({
         xpos: Math.floor(Math.random() * 700),
         ypos: 0,
@@ -139,7 +139,7 @@ function enemySpawn() {
         alive: 1,
         health: 20
       })
-    } else if(enemyType <= 75){
+    } else if (enemyType <= 75) {
       enemies.push({
         xpos: Math.floor(Math.random() * 700),
         ypos: 0,
@@ -161,19 +161,19 @@ function enemySpawn() {
 
 function filter_array2(test_array) {
   result = []
-  for(x=0;x<test_array.length;x++){
-    if(test_array[x].alive == 1){
+  for (x = 0; x < test_array.length; x++) {
+    if (test_array[x].alive == 1) {
       result.push(test_array[x])
     }
   }
   return result;
 }
 
-function upgradePistol(){
-  if(pistolLevel<5 && money>=pistolUpgradeCost){
+function upgradePistol() {
+  if (pistolLevel < 5 && money >= pistolUpgradeCost) {
     money -= pistolUpgradeCost
     pistolLevel++
-    switch(pistolUpgradeCost){
+    switch (pistolUpgradeCost) {
       case 50:
         pistolUpgradeCost = 80 //R2
         break
@@ -188,7 +188,7 @@ function upgradePistol(){
         document.getElementById("pistolIcon").src = "pistolIconMax.png"
         break
     }
-    pistolRechargeTime = Math.round((pistolRechargeTime - 0.1) * 10) / 10 
+    pistolRechargeTime = Math.round((pistolRechargeTime - 0.1) * 10) / 10
     document.getElementById("money").innerHTML = "Money: " + money
     document.getElementById("pistolLevel").innerHTML = "Level " + pistolLevel
     document.getElementById("pistolUpgradeCost").innerHTML = "$" + pistolUpgradeCost
@@ -197,11 +197,11 @@ function upgradePistol(){
   }
 }
 
-function upgradeBullet(){
-  if(bulletLevel<5 && money>=bulletUpgradeCost){
+function upgradeBullet() {
+  if (bulletLevel < 5 && money >= bulletUpgradeCost) {
     money -= bulletUpgradeCost
     bulletLevel++
-    switch(bulletUpgradeCost){
+    switch (bulletUpgradeCost) {
       case 50:
         bulletUpgradeCost = 80 //R2
         break
@@ -225,11 +225,11 @@ function upgradeBullet(){
   }
 }
 
-function upgradeDamage() { 
-  if(damageLevel<5 && money>=damageUpgradeCost){
-    money-= damageUpgradeCost
+function upgradeDamage() {
+  if (damageLevel < 5 && money >= damageUpgradeCost) {
+    money -= damageUpgradeCost
     damageLevel++
-    switch(damageUpgradeCost){
+    switch (damageUpgradeCost) {
       case 100:
         damageUpgradeCost = 150;
         weaponDamage += 5
@@ -251,15 +251,15 @@ function upgradeDamage() {
   }
 }
 
-function buyLaserPointer(){
-  if(money>=100){
+function buyLaserPointer() {
+  if (money >= 100) {
     laserPointer = true;
     money -= 100
+    document.getElementById("scopeIcon").src = "scopeIconPurchased.png"
   }
-  document.getElementById("scopeIcon").src = "scopeIconPurchased.png"
 }
 
-function draw(){
+function draw() {
   ctx.fillStyle = "black";
   ctx.fillRect(0, 0, 700, 700);
   ctx.beginPath();
@@ -271,13 +271,13 @@ function draw(){
   ctx.fillStyle = "#4caf50";
   ctx.fill();
 
-  for(index of shots){
+  for (index of shots) {
     ctx.fillStyle = "red";
     ctx.fillRect(index.xpos - bulletWidth, index.ypos, bulletWidth * 2, 20);
   }
 
-  for(index of enemies){
-    switch(index.type){
+  for (index of enemies) {
+    switch (index.type) {
       case 1:
         ctx.fillStyle = "yellow";
         ctx.fillRect(index.xpos - 10, index.ypos, 20, 20);
@@ -289,7 +289,7 @@ function draw(){
     }
   }
 
-  if(laserPointer){
+  if (laserPointer) {
     ctx.strokeStyle = "#ff5900";
     ctx.beginPath();
     ctx.moveTo(xpos, 670)
@@ -319,6 +319,6 @@ function updateTime() {
 }
 
 setInterval(() => {
-  if(gamerunning) game()
-}, 1000/60);
+  if (gamerunning) game()
+}, 1000 / 60);
 setInterval(updateTime, 1000);
