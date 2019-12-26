@@ -4,10 +4,31 @@ pistolRechargeTime = 1;
 bulletLevel = 1;
 bulletUpgradeCost = 50;
 bulletWidth = 4;
+damageLevel = 1;
+damageUpgradeCost = 100;
 enemySpawnTime = 180;
 spawnCD = 180;
 laserPointer = false;
 weaponDamage = 15;
+
+document.addEventListener("keydown", keyDown2)
+
+function keyDown2(evt) {
+  switch(evt.keyCode){
+    case 49:
+      upgradePistol()
+      break
+    case 50:
+      upgradeBullet()
+      break
+    case 51:
+      upgradeDamage()
+      break
+    case 52:
+      buyLaserPointer()
+      break
+  }
+}
 
 function game(){
   if (left && xpos >= 0) {
@@ -43,21 +64,26 @@ function game(){
     for(enemyId of enemies){
       if(enemyId.ypos>=670){ //WHENEVER ENEMY HITS THE PLAYER
         enemyId.alive = 0;
-        health -= 10;
+        switch(enemyId.type){
+          case 1:
+            health -= 10;
+            break;
+          case 2:
+            health -= 20;
+            break;
+        }
         document.getElementById("health").innerHTML = "Health: " + health
       }
-      if(collidesWith(shotId,enemyId)) { //WHENEVER ENEMY DIES
-        if(enemyId.health<=weaponDamage){
-          switch(enemyId){
+      if(collidesWith(shotId,enemyId)) { //WHENEVER COLLIDES WITH BULLET
+        if(enemyId.health<weaponDamage){ //IF HEALTH IS LOWER THAN WEAPON DAMAGE -> KILL
+          shotId.alive = 0
+          enemyId.alive = 0
+          switch(enemyId.type){
             case 1:
-              shotId.alive = 0
-              enemyId.alive = 0
               money += 5;
               score += 5;
               break;
             case 2:
-              shotId.alive = 0
-              enemyId.alive = 0
               money += 15;
               score += 15;
               break;
@@ -113,7 +139,7 @@ function enemySpawn() {
         alive: 1,
         health: 20
       })
-    } else if(enemyType < 75){
+    } else if(enemyType <= 75){
       enemies.push({
         xpos: Math.floor(Math.random() * 700),
         ypos: 0,
@@ -158,7 +184,8 @@ function upgradePistol(){
         pistolUpgradeCost = 150 //R4
         break
       case 150:
-        pistolUpgradeCost = 200 //R5
+        pistolUpgradeCost = "MAX" //R5
+        document.getElementById("pistolIcon").src = "pistolIconMax.png"
         break
     }
     pistolRechargeTime = Math.round((pistolRechargeTime - 0.1) * 10) / 10 
@@ -185,7 +212,8 @@ function upgradeBullet(){
         bulletUpgradeCost = 150 //R4
         break
       case 150:
-        bulletUpgradeCost = 200 //R5
+        bulletUpgradeCost = "MAX" //R5
+        document.getElementById("bulletIcon").src = "bulletIconMax.png"
         break
     }
     bulletWidth++
@@ -197,11 +225,38 @@ function upgradeBullet(){
   }
 }
 
+function upgradeDamage() { 
+  if(damageLevel<5 && money>=damageUpgradeCost){
+    money-= damageUpgradeCost
+    damageLevel++
+    switch(damageUpgradeCost){
+      case 100:
+        damageUpgradeCost = 150;
+        weaponDamage += 5
+        break
+      case 150:
+        damageUpgradeCost = 200
+        weaponDamage += 7
+        break
+      case 200:
+        damageUpgradeCost = "MAX"
+        weaponDamage += 10
+        document.getElementById("bulletDamageIcon").src = "bulletDamageIconMax.png"
+        break
+    }
+    document.getElementById("money").innerHTML = "Money: " + money
+    document.getElementById("bulletDamageLevel").innerHTML = "Level " + damageLevel
+    document.getElementById("bulletDamageUpgradeCost").innerHTML = "$" + damageUpgradeCost
+    document.getElementById("bulletDamage").innerHTML = "Damage:<br>" + weaponDamage
+  }
+}
+
 function buyLaserPointer(){
   if(money>=100){
     laserPointer = true;
     money -= 100
   }
+  document.getElementById("scopeIcon").src = "scopeIconPurchased.png"
 }
 
 function draw(){

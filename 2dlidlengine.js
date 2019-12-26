@@ -24,6 +24,7 @@ canv.style.border = "2px solid #4caf50";
 document.addEventListener("keydown", keyDown);
 document.addEventListener("keyup", keyUp);
 
+
 function keyDown(evt) {
     switch (evt.keyCode) {
       case 32:
@@ -41,6 +42,9 @@ function keyDown(evt) {
       case 40:
         down = true;
         break;
+      case 27:
+        startGame();
+        break
     }
 }
 
