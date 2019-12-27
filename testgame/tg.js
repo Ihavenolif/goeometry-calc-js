@@ -10,6 +10,8 @@ enemySpawnTime = 180;
 spawnCD = 180;
 laserPointer = false;
 weaponDamage = 15;
+laserGun = false;
+shotTimeRemaining = 0
 
 document.addEventListener("keydown", keyDown2)
 
@@ -62,18 +64,7 @@ function game() {
   for (shotId of shots) {
     if (collidesWithY(shotId, { height: 0, ypos: 0 })) shotId.alive = 0; //WHENEVER A SHOT EXITS THE MAP
     for (enemyId of enemies) {
-      if (enemyId.ypos >= 670) { //WHENEVER ENEMY HITS THE PLAYER
-        enemyId.alive = 0;
-        switch (enemyId.type) {
-          case 1:
-            health -= 10;
-            break;
-          case 2:
-            health -= 20;
-            break;
-        }
-        document.getElementById("health").innerHTML = "Health: " + health
-      }
+
       if (collidesWith(shotId, enemyId)) { //WHENEVER COLLIDES WITH BULLET
         if (enemyId.health <= weaponDamage) { //IF HEALTH IS LOWER THAN WEAPON DAMAGE -> KILL
           shotId.alive = 0
@@ -97,6 +88,20 @@ function game() {
     }
   }
 
+  for (enemyId of enemies) {
+    if (enemyId.ypos >= 670) { //WHENEVER ENEMY HITS THE PLAYER
+      enemyId.alive = 0
+      switch (enemyId.type) {
+        case 1:
+          health -= 10;
+          break;
+        case 2:
+          health -= 20;
+          break;
+      }
+      document.getElementById("health").innerHTML = "Health: " + health
+    }
+  }
   shots = filter_array2(shots)
   enemies = filter_array2(enemies)
 
@@ -112,7 +117,7 @@ function game() {
 }
 
 function shoot() {
-  if (CDCount == 0) {
+  if (CDCount == 0 && !laserGun) {
     shots.push({
       xpos: xpos,
       ypos: 650,
@@ -122,6 +127,29 @@ function shoot() {
       alive: 1
     });
     CDCount = pistolRechargeTime * 60;
+  } else if (CDCount == 0 && laserGun) {
+    for (enemyId of enemies) {
+      if (collidesWithX(enemyId, { xpos: xpos, width: bulletWidth })) {
+        if (enemyId.health <= weaponDamage) { //IF HEALTH IS LOWER THAN WEAPON DAMAGE -> KILL
+          enemyId.alive = 0
+          switch (enemyId.type) {
+            case 1:
+              money += 5;
+              score += 5;
+              break;
+            case 2:
+              money += 15;
+              score += 15;
+              break;
+          }
+          document.getElementById("money").innerHTML = "Money: " + money
+        } else {
+          enemyId.health -= weaponDamage;
+        }
+      }
+    }
+    CDCount = pistolRechargeTime * 60;
+    shotTimeRemaining = 3
   }
 }
 
@@ -170,7 +198,7 @@ function filter_array2(test_array) {
 }
 
 function upgradePistol() {
-  if (pistolLevel < 5 && money >= pistolUpgradeCost) {
+  if (pistolLevel < 6 && money >= pistolUpgradeCost) {
     money -= pistolUpgradeCost
     pistolLevel++
     switch (pistolUpgradeCost) {
@@ -184,17 +212,28 @@ function upgradePistol() {
         pistolUpgradeCost = 150 //R4
         break
       case 150:
-        pistolUpgradeCost = "MAX" //R5
+        pistolUpgradeCost = 200 //R5
+        break
+      case 200:
+        pistolUpgradeCost = 250 //R6
         document.getElementById("pistolIcon").src = "pistolIconMax.png"
         break
     }
-    pistolRechargeTime = Math.round((pistolRechargeTime - 0.1) * 10) / 10
-    document.getElementById("money").innerHTML = "Money: " + money
-    document.getElementById("pistolLevel").innerHTML = "Level " + pistolLevel
-    document.getElementById("pistolUpgradeCost").innerHTML = "$" + pistolUpgradeCost
-    document.getElementById("pistolRecharge").innerHTML = "Recharge:<br>" + pistolRechargeTime + "s"
 
+    pistolRechargeTime = Math.round((pistolRechargeTime - 0.1) * 10) / 10
+
+  } else if (pistolLevel == 6 && money >= pistolUpgradeCost) {
+    pistolLevel = 1
+    laserGun = true
+    money -= pistolUpgradeCost
+    document.getElementById("pistolIcon").src = "laserIcon.png"
+    pistolUpgradeCost = "MAX"
   }
+
+  document.getElementById("money").innerHTML = "Money: " + money
+  document.getElementById("pistolLevel").innerHTML = "Level " + pistolLevel
+  document.getElementById("pistolUpgradeCost").innerHTML = "$" + pistolUpgradeCost
+  document.getElementById("pistolRecharge").innerHTML = "Recharge:<br>" + pistolRechargeTime + "s"
 }
 
 function upgradeBullet() {
@@ -256,6 +295,7 @@ function buyLaserPointer() {
     laserPointer = true;
     money -= 100
     document.getElementById("scopeIcon").src = "scopeIconPurchased.png"
+    document.getElementById("money").innerHTML = "Money: " + money
   }
 }
 
@@ -290,11 +330,17 @@ function draw() {
   }
 
   if (laserPointer) {
-    ctx.strokeStyle = "#ff5900";
+    ctx.strokeStyle = "#fcba03";
     ctx.beginPath();
     ctx.moveTo(xpos, 670)
     ctx.lineTo(xpos, 0)
     ctx.stroke();
+  }
+
+  if (shotTimeRemaining > 0) {
+    shotTimeRemaining--
+    ctx.fillStyle = "#34ebe5"
+    ctx.fillRect(xpos - bulletWidth / 2, 0, bulletWidth, 670)
   }
 }
 

@@ -26,77 +26,77 @@ document.addEventListener("keyup", keyUp);
 
 
 function keyDown(evt) {
-    switch (evt.keyCode) {
-      case 32:
-        space = true;
-        break;
-      case 37:
-        left = true;
-        break;
-      case 38:
-        up = true;
-        break;
-      case 39:
-        right = true;
-        break;
-      case 40:
-        down = true;
-        break;
-      case 27:
-        startGame();
-        break
-    }
+  switch (evt.keyCode) {
+    case 32:
+      space = true;
+      break;
+    case 37:
+      left = true;
+      break;
+    case 38:
+      up = true;
+      break;
+    case 39:
+      right = true;
+      break;
+    case 40:
+      down = true;
+      break;
+    case 27:
+      startGame();
+      break
+  }
 }
 
 function keyUp(evt) {
-    switch (evt.keyCode) {
-      case 32:
-        space = false;
-        break;
-      case 37:
-        left = false;
-        break;
-      case 38:
-        up = false;
-        break;
-      case 39:
-        right = false;
-        break;
-      case 40:
-        down = false;
-        break;
-    }
+  switch (evt.keyCode) {
+    case 32:
+      space = false;
+      break;
+    case 37:
+      left = false;
+      break;
+    case 38:
+      up = false;
+      break;
+    case 39:
+      right = false;
+      break;
+    case 40:
+      down = false;
+      break;
+  }
 }
 
 //COLLISION
-function collidesWithX(obj1, obj2){
-  if(Math.abs(obj1.xpos-obj2.xpos)<Math.abs(obj1.width-obj2.width)){
+function collidesWithX(obj1, obj2) {
+  if (Math.abs(obj1.xpos - obj2.xpos) < Math.abs(obj1.width - obj2.width)) {
     return true;
   }
 }
 
-function collidesWithY(obj1, obj2){
-  if(Math.abs(obj1.ypos-obj2.ypos)<(Math.abs(obj1.height-obj2.height)+ Math.min(obj1.height, obj2.height))){
+function collidesWithY(obj1, obj2) {
+  if (Math.abs(obj1.ypos - obj2.ypos) < (Math.abs(obj1.height - obj2.height) + Math.min(obj1.height, obj2.height))) {
     return true;
   }
 }
 
-function collidesWith(obj1, obj2){
+function collidesWith(obj1, obj2) {
   return collidesWithX(obj1, obj2) && collidesWithY(obj1, obj2);
 }
 
 function filter_array(test_array) {
   var index = -1,
-      arr_length = test_array ? test_array.length : 0,
-      resIndex = -1,
-      result = [];
+    arr_length = test_array ? test_array.length : 0,
+    resIndex = -1,
+    result = [];
 
   while (++index < arr_length) {
-      var value = test_array[index];
+    var value = test_array[index];
 
-      if (value) {
-          result[++resIndex] = value;
-      }
+    if (value) {
+      result[++resIndex] = value;
+    }
   }
 
   return result;
