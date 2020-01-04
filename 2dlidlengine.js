@@ -9,8 +9,11 @@ up = false
 right = false
 down = false
 space = false
+ctrl = false
+shift = false
 CDCount = 0;
 shots = [];
+enemyShots = [];
 enemies = [];
 health = 100;
 gamerunning = false;
@@ -45,6 +48,12 @@ function keyDown(evt) {
     case 27:
       startGame();
       break
+    case 17:
+      ctrl = true
+      break
+    case 16:
+      shift = true
+      break
   }
 }
 
@@ -65,6 +74,12 @@ function keyUp(evt) {
     case 40:
       down = false;
       break;
+    case 17:
+      ctrl = false
+      break
+    case 16:
+      shift = false
+      break
   }
 }
 

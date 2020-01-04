@@ -12,6 +12,21 @@ laserPointer = false;
 weaponDamage = 15;
 laserGun = false;
 shotTimeRemaining = 0
+pushUpgradeCost = 50
+pushCooldown = 0
+pushRemainingCooldown = 0
+pushLevel = 0
+freezeUpgradeCost = 50
+freezeCooldown = 0
+freezeRemainingCooldown = 0
+freezeLevel = 0
+freezeDuration = 0
+freezeRemainingDuration = 0
+explosionUpgradeCost = 50
+explosionCooldown = 0
+explosionRemainingCooldown = 0
+explosionLevel = 0
+explosionDamage = 0
 
 document.addEventListener("keydown", keyDown2)
 
@@ -29,15 +44,198 @@ function keyDown2(evt) {
     case 52:
       buyLaserPointer()
       break
+    case 81:
+      if (!shift) abilityPush()
+      else purchasePush()
+      break
+    case 87:
+      if (!shift) abilityFreeze()
+      else purchaseFreeze()
+      break
+    case 69:
+      if (!shift) abilityExplosion()
+      else purchaseExplosion()
+      break
+    case 82:
+      if (!shift) abilityR()
+      else purchaseR()
+      break
+  }
+}
+
+function purchasePush() {
+  if (pushLevel <= 3 && money >= pushUpgradeCost) {
+    money -= pushUpgradeCost
+    pushLevel++
+    switch (pushCooldown) {
+      case 0:
+        pushCooldown = 15
+        break
+      case 15:
+        pushCooldown = 12
+        break
+      case 12:
+        pushCooldown = 9
+        break
+    }
+
+    switch (pushUpgradeCost) {
+      case 50:
+        pushUpgradeCost = 100
+        break
+      case 100:
+        pushUpgradeCost = 150
+        break
+      case 150:
+        pushUpgradeCost = "MAX"
+        document.getElementById("pushIcon").src = "pushIconMax.png"
+        break
+    }
+
+    document.getElementById("pushLevel").innerHTML = "Level: " + pushLevel
+    document.getElementById("pushUpgradeCost").innerHTML = "$" + pushUpgradeCost
+    document.getElementById("pushCooldown").innerHTML = "Cooldown:<br>" + pushCooldown + "s"
+    document.getElementById("pushCooldown").style = ""
+  }
+}
+
+function abilityPush() {
+  if (pushLevel > 0 && pushRemainingCooldown == 0) {
+    for (x of enemies) {
+      x.ypos = 0
+    }
+    pushRemainingCooldown = pushCooldown
+  }
+}
+
+function purchaseFreeze() {
+  if (freezeLevel <= 3 && money >= freezeUpgradeCost) {
+    money -= freezeUpgradeCost
+    freezeLevel++
+    switch (freezeCooldown) {
+      case 0:
+        freezeCooldown = 20
+        break;
+      case 20:
+        freezeCooldown = 18
+        break
+      case 18:
+        freezeCooldown = 15
+        break
+    }
+    switch (freezeDuration) {
+      case 0:
+        freezeDuration = 2
+        break
+      case 2:
+        freezeDuration = 3
+        break
+      case 3:
+        freezeDuration = 4
+        break
+    }
+    switch (freezeUpgradeCost) {
+      case 50:
+        freezeUpgradeCost = 100
+        break
+      case 100:
+        freezeUpgradeCost = 150
+        break
+      case 150:
+        freezeUpgradeCost = "MAX"
+        document.getElementById("freezeIcon").src = "freezeIconMax.png"
+        break
+    }
+    document.getElementById("freezeLevel").innerHTML = "Level: " + freezeLevel
+    document.getElementById("freezeUpgradeCost").innerHTML = "$" + freezeUpgradeCost
+    document.getElementById("freezeCooldown").innerHTML = "Cooldown:<br>" + freezeCooldown
+    document.getElementById("freezeCooldown").style = ""
+    document.getElementById("freezeDuration").innerHTML = "Duration:<br>" + freezeDuration + "s"
+    document.getElementById("freezeDuration").style = ""
+  }
+}
+
+function purchaseExplosion() {
+  if (explosionLevel <= 2 && money >= explosionUpgradeCost) {
+    money -= explosionUpgradeCost
+    explosionLevel++
+    switch (explosionCooldown) {
+      case 0:
+        explosionCooldown = 30
+        break;
+      case 30:
+        explosionCooldown = 25
+        break
+    }
+    switch (explosionDamage) {
+      case 0:
+        explosionDamage = 15
+        break
+      case 15:
+        explosionDamage = 20
+        break
+    }
+    switch (explosionUpgradeCost) {
+      case 50:
+        explosionUpgradeCost = 100
+        break
+      case 100:
+        explosionUpgradeCost = "MAX"
+        document.getElementById("explosionIcon").src = "explosionIconMax.png"
+        break
+    }
+    document.getElementById("explosionLevel").innerHTML = "Level: " + explosionLevel
+    document.getElementById("explosionUpgradeCost").innerHTML = "$" + explosionUpgradeCost
+    document.getElementById("explosionCooldown").innerHTML = "Cooldown:<br>" + explosionCooldown
+    document.getElementById("explosionCooldown").style = ""
+    document.getElementById("explosionDamage").innerHTML = "Damage:<br>" + explosionDamage
+    document.getElementById("explosionDamage").style = ""
+  }
+}
+
+function abilityExplosion() {
+  if (explosionRemainingCooldown == 0) {
+    for (x of enemies) {
+      if (x.health <= explosionDamage) {
+        x.alive = 0
+        switch (x.type) {
+          case 1:
+            money += 5;
+            score += 5;
+            break;
+          case 2:
+            money += 15;
+            score += 15;
+            break;
+          case "BOSS":
+            money += 100
+            score += 100
+        }
+      } else {
+        x.health -= explosionDamage
+      }
+    }
+    explosionRemainingCooldown = explosionCooldown
+  }
+}
+
+function abilityFreeze() {
+  if (freezeLevel > 0 && freezeRemainingCooldown == 0) {
+    freezeRemainingCooldown = freezeCooldown
+    freezeRemainingDuration = freezeDuration
   }
 }
 
 function game() {
   if (left && xpos >= 0) {
-    xpos -= 6;
+    if (shift && ctrl || !shift && !ctrl) xpos -= 6
+    if (shift && !ctrl) xpos -= 12
+    if (!shift && ctrl) xpos -= 3
   }
   if (right && xpos <= 700) {
-    xpos += 6;
+    if (shift && ctrl || !shift && !ctrl) xpos += 6
+    if (shift && !ctrl) xpos += 12
+    if (!shift && ctrl) xpos += 3
   }
 
   if (space) {
@@ -51,13 +249,19 @@ function game() {
   }
 
   for (x of enemies) {
-    switch (x.type) {
-      case 1:
-        x.ypos += 3
-        break;
-      case 2:
-        x.ypos += 2
-        break;
+    if (freezeRemainingDuration == 0) {
+      switch (x.type) {
+        case 1:
+          x.ypos += 3
+          break;
+        case 2:
+          x.ypos += 2
+          break;
+        case "BOSS":
+          x.move()
+          x.shoot(x.xpos)
+          x.switchDirection()
+      }
     }
   }
 
@@ -78,6 +282,9 @@ function game() {
               money += 15;
               score += 15;
               break;
+            case "BOSS":
+              money += 100
+              score += 100
           }
           document.getElementById("money").innerHTML = "Money: " + money
         } else {
@@ -102,9 +309,19 @@ function game() {
       document.getElementById("health").innerHTML = "Health: " + health
     }
   }
+
+  for (enemyShotId of enemyShots) {
+    enemyShotId.ypos += 8
+    if (collidesWith(enemyShotId, { xpos: xpos, width: 60, ypos: 700, height: 30 })) { // WHENEVER ENEMY SHOT HITS THE PLAYER
+      enemyShotId.alive = 0
+      health -= 15
+      document.getElementById("health").innerHTML = "Health: " + health
+    }
+  }
+
   shots = filter_array2(shots)
   enemies = filter_array2(enemies)
-
+  enemyShots = filter_array2(enemyShots)
 
   if (health <= 0) {
     gamerunning = false;
@@ -185,6 +402,54 @@ function enemySpawn() {
 
   }
   spawnCD--
+}
+
+function spawnBoss() {
+  enemies.push({
+    height: 15,
+    width: 60,
+    type: "BOSS",
+    health: 80,
+    ypos: 0,
+    xpos: Math.floor(Math.random() * 700),
+    direction: Math.floor(Math.random() * 10) >= 5 ? "left" : "right",
+    move: function () {
+      if (this.direction == "right") {
+        if (this.xpos <= 700) {
+          this.xpos += 2
+        } else {
+          this.direction = "left"
+        }
+      } else if (this.direction == "left") {
+        if (this.xpos >= 0) {
+          this.xpos -= 2
+        } else {
+          this.direction = "right"
+        }
+      }
+    },
+    shootCD: 120,
+    shoot: function (shotXpos) {
+      if (this.shootCD == 0) {
+        this.shootCD = 120
+        enemyShots.push({
+          ypos: 0,
+          xpos: shotXpos,
+          width: 3,
+          height: 20,
+          alive: 1
+        })
+      }
+      this.shootCD--
+    },
+    switchDirection: function () {
+      if (Math.floor(Math.random() * 500) < 1) {
+        this.direction == "right" ? this.direction = "left" : this.direction = "right"
+      }
+
+    },
+    alive: 1
+  })
 }
 
 function filter_array2(test_array) {
@@ -313,7 +578,7 @@ function draw() {
 
   for (index of shots) {
     ctx.fillStyle = "red";
-    ctx.fillRect(index.xpos - bulletWidth, index.ypos, bulletWidth * 2, 20);
+    ctx.fillRect(index.xpos - bulletWidth / 2, index.ypos, bulletWidth, 20);
   }
 
   for (index of enemies) {
@@ -326,7 +591,16 @@ function draw() {
         ctx.fillStyle = "blue";
         ctx.fillRect(index.xpos - 15, index.ypos, 30, 30);
         break;
+      case "BOSS":
+        ctx.fillStyle = "red"
+        ctx.fillRect(index.xpos - 30, index.ypos + 7, 60, 7)
+        break
     }
+  }
+
+  for (index of enemyShots) {
+    ctx.fillStyle = "red"
+    ctx.fillRect(index.xpos - index.width / 2, index.ypos, index.width, index.height)
   }
 
   if (laserPointer) {
@@ -347,11 +621,19 @@ function draw() {
 function updateTime() {
   if (gamerunning) {
     inc++;
+    if (pushRemainingCooldown > 0) pushRemainingCooldown--
+    if (freezeRemainingCooldown > 0) freezeRemainingCooldown--
+    if (freezeRemainingDuration > 0) freezeRemainingDuration--
+    if (explosionRemainingCooldown > 0) explosionRemainingCooldown--
+    document.getElementById("pushCooldown").innerHTML = "Cooldown:<br>" + pushRemainingCooldown + "/" + pushCooldown
+    document.getElementById("freezeCooldown").innerHTML = "Cooldown:<br>" + freezeRemainingCooldown + "/" + freezeCooldown
+    document.getElementById("explosionCooldown").innerHTML = "Cooldown:<br>" + explosionRemainingCooldown + "/" + explosionCooldown
     sec = inc;
     if (sec == 60) {
       sec -= 60;
       inc -= 60;
       min++;
+      spawnBoss()
     }
     if (min.toString().length == 1) {
       min = "0" + min;
